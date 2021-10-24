@@ -1,4 +1,4 @@
-const pais       = require('../../models').pais;
+const pais = require('../models').pais;
 
 const arrayFronteras = (fronteras)=>{
     return fronteras.reduce((a,b)=>a+=","+b );
