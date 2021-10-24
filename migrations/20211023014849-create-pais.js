@@ -19,7 +19,16 @@ module.exports = {
       fronteras:{
 
         type: DataTypes.STRING
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATEONLY
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATEONLY
       }
+     
     });
   },
   down: async (queryInterface, Sequelize) => {
