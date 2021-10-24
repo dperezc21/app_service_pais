@@ -3,17 +3,20 @@ const pais = require('../models').pais;
 const  metodos = {
     tratarDatos(pais){
         if (pais.length>1){
-            pais.reduce(element => {
-                pais[pais.indexOf(element)].fronteras = element.fronteras.split(',')
+            pais.forEach((element, index) => {
+                pais[index].fronteras = element.fronteras.split(',');
             });
+            
         }else{
-            pais.fronteras = pais.fronteras.split(',');
+            pais["fronteras"] = pais["fronteras"].split(',');
         }
         return pais;
     },
+
     arrayFronterasToString (fronteras){
         return fronteras.reduce((a,b)=>a+=","+b );
-    }  
+    }
+    
 }
 
 module.exports = {
