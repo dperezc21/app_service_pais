@@ -1,18 +1,19 @@
 const pais = require('../models').pais;
 
-const arrayFronteras = (fronteras)=>{
-    return fronteras.reduce((a,b)=>a+=","+b );
-}
-
-function tratarDatos(pais){
-    if (pais.length>1){
-        pais.forEach((element, index) => {
-            pais[index].fronteras = element.fronteras.split(',')
-        }); 
-    }else{
-        pais.fronteras = pais.fronteras.split(',');
-    }
-    return pais;
+const  metodos = {
+    tratarDatos(pais){
+        if (pais.length>1){
+            pais.reduce(element => {
+                pais[pais.indexOf(element)].fronteras = element.fronteras.split(',')
+            });
+        }else{
+            pais.fronteras = pais.fronteras.split(',');
+        }
+        return pais;
+    },
+    arrayFronterasToString (fronteras){
+        return fronteras.reduce((a,b)=>a+=","+b );
+    }  
 }
 
 module.exports = {
@@ -23,14 +24,14 @@ module.exports = {
         .create ({
              nombre: req.body.nombre,
              favorito: req.body.favorito,
-             fronteras: arrayFronteras(fronteras)
+             fronteras: metodos.arrayFronterasToString(fronteras)
         })
         .then(pais => res.status(200).send(pais))
         .catch(error => res.status(400).send(error))
  },
  list(_, res) {
      return pais.findAll({})
-        .then(pais => res.json(tratarDatos(pais)))
+        .then(pais => res.json(metodos.tratarDatos(pais)))
         .catch(error => res.status(400).send(error))
  },
 
@@ -39,11 +40,9 @@ module.exports = {
          where: {
              id: req.body.id,
          }
-        
      })
-     .then(pais => res.json(tratarDatos(pais)))
-     .catch(error => res.status(400).send(error))
-     
+     .then(pais => res.json(metodos.tratarDatos(pais)))
+     .catch(error => res.status(400).send(error)) 
   },
 
   delete (req, res) {
@@ -61,7 +60,7 @@ module.exports = {
     return pais.update({
         nombre:req.body.nombre,
         favorito:req.body.favorito,
-        fronteras: arrayFronteras(fronteras)
+        fronteras: metodos.arrayFronterasToString(fronteras)
     },
     {
         where: {
